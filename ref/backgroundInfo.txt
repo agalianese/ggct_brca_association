@@ -1,0 +1,32 @@
+# What are genome features and how are they represented?
+# Throughout this manual, we will discuss how to use bedtools to manipulate, compare and ask questions of genome “features”. Genome features can be functional elements (e.g., genes), genetic polymorphisms (e.g. SNPs, INDELs, or structural variants), or other annotations that have been discovered or curated by genome sequencing groups or genome browser groups. In addition, genome features can be custom annotations that an individual lab or researcher defines (e.g., my novel gene or variant).
+# 
+# The basic characteristics of a genome feature are the chromosome or scaffold on which the feature “resides”, the base pair on which the feature starts (i.e. the “start”), the base pair on which feature ends (i.e. the “end”), the strand on which the feature exists (i.e. “+” or “-“), and the name of the feature if one is applicable.
+# 
+# The two most widely used formats for representing genome features are the BED (Browser Extensible Data) and GFF (General Feature Format) formats. bedtools was originally written to work exclusively with genome features described using the BED format, but it has been recently extended to seamlessly work with BED, GFF and VCF files.
+# 
+# Existing annotations for the genomes of many species can be easily downloaded in BED and GFF format from the UCSC Genome Browser’s “Table Browser” (http://genome.ucsc.edu/cgi-bin/hgTables?command=start) or from the “Bulk Downloads” page (http://hgdownload.cse.ucsc.edu/downloads.html). In addition, the Ensemble Genome Browser contains annotations in GFF/GTF format for many species (http://www.ensembl.org/info/data/ftp/index.html)
+
+
+
+#bedtools coverage -s -a /Users/agalianese/jiayu/ref/ggct_full_exon_hg38.bed -b slice.bam -bed > $myId.ggct.bed
+
+
+#If the track line useScore attribute is set to 1 for this annotation data set, the score value will determine the level of gray in which this feature is displayed (higher numbers = darker gray).
+
+# chr7	30496621	30497235	Exon_4_v1_202	1	-
+# chr7	30497002	30497235	Exon_4_v2_204	1	-
+# chr7	30497741	30497896	Exon_3_v2_204	1	-
+# chr7	30498803	30498938	Exon_3_v1_202	1	-
+# chr7	30500536	30500681	Exon_2	      1	-
+# chr7	30504569	30504799	Exon_1_v2_204	1	-
+# chr7	30504569	30504829	Exon_1_v1_202	1	-
+
+
+# N_features = number of features in B that overlapped (by at least 1 bp) the A interval
+# A_Bases = number of bases in A that had non-zero coverage from features in B
+# A_Len = length of entry in A
+# Coverage_Ratio = fraction of bases in A that had non-zero coverage from features in B
+
+#chr7	30496621	30497235	Exon_4_v1_202	1	-	
+#4962	552	614	0.8990228
