@@ -1,0 +1,141 @@
+---
+title: "1 sample Analysis for validation, then apply to all"
+output: html_notebook
+---
+
+#install these too
+```{r}
+library(survival)
+library(survminer)
+library(tidyverse)
+library(TCGAbiolinks)
+
+setwd("~/Documents/GGCT_BRCA_assocation")
+
+
+```
+
+
+# Quietly read in Clinical Metadata
+```{r, message=FALSE}
+
+#TCGA clinical metadata includes family_history.tsv, follow_up.tsv, pathology_detail.tsv > All were empty and removed from the analysis
+
+TCGA_full_clinicalDF <- data.frame(read_delim("~/Documents/GGCT_BRCA_assocation/clinical.cases_selection.2023-10-17/brca_tcga_pan_can_atlas_2018_clinical_data.tsv", delim = "\t", escape_double = FALSE, trim_ws = TRUE))
+na_TCGA_cols <- data.frame(sapply(TCGA_full_clinicalDF, function(x) all(is.na(x))))
+TCGA_clinicalDF <- TCGA_full_clinicalDF[, !na_TCGA_cols, drop = FALSE]
+head(TCGA_clinicalDF)
+
+
+clinicalFullDF <- data.frame(read_tsv("~/Documents/GGCT_BRCA_assocation/clinical.cases_selection.2023-10-17/clinical.tsv", na = c("'--", "not reported")))
+na_clinical_cols <- data.frame(sapply(clinicalFullDF, function(x) all(is.na(x))))
+clinicalDF <- clinicalFullDF[, !na_clinical_cols, drop = FALSE]
+head(clinicalDF)
+
+#This will be used to match my data with clinical
+matchFullDF <- data.frame(read.delim("~/Downloads/gdc_sample_sheet.2023-10-31.tsv", na = c("'--", "not reported")))
+na_match_cols <- data.frame(sapply(matchFullDF, function(x) all(is.na(x))))
+matchDF <- matchFullDF[, !na_match_cols, drop = FALSE]
+head(matchDF)
+
+
+
+# come back to this DF, I think all its information is covered by matchDF, which includes more info
+#exposureFullDF <- data.frame(read_tsv("~/Documents/GGCT_BRCA_assocation/clinical.cases_selection.2023-10-17/exposure.tsv", na = c("'--", "not reported")))
+#na_exposure_cols <- data.frame(sapply(exposureFullDF, function(x) all(is.na(x))))
+#exposureDF <- exposureFullDF[, !na_exposure_cols, drop = FALSE]
+#head(exposureDF)
+```
+
+#print colnames of all clinical metadata
+```{r}
+print("TCGA_clinical_data")
+head(TCGA_clinical_data)
+
+print("clinicalDF")
+head(clinicalDF$case_id)
+
+print("matchDF")
+head(matchDF$Case.ID)
+```
+
+#remove empty columns from clinicalDFs
+```{r}
+#im literally going to have to draw an SQL diagram for all the data types
+
+matchDF
+test$fileId
+#merge(test, matchDF, by.x=test$fileId, by.y = matchDF$File.ID)
+
+head(test)
+head(matchDF)
+
+which(matchDF$File.ID == "ff7f0d51-dcd7-4002-a42c-4d63e4bdd600")
+
+
+matchDF[569,]
+
+```
+
+
+```{r}
+head(TCGA_clinical_data)
+
+which(TCGA_clinical_data$Other.Patient.ID == "c8416976-277e-44f0-9440-9f59558102f4")
+
+table(TCGA_clinical_data$Other.Patient.ID)
+up
+
+TCGAbiolinks::
+
+```
+
+```{r}
+
+# Read the file and create a data frame
+
+test <- data.frame(read_tsv(file="~/Documents/GGCT_BRCA_assocation/bedtools_coverage_out/ff7f0d51-dcd7-4002-a42c-4d63e4bdd600.ggct.bed", col_names = F))
+  
+# Add an extra column with the file name
+test$fileId <- "ff7f0d51-dcd7-4002-a42c-4d63e4bdd600"
+
+#whats a featyre
+
+
+# N_features = number of features in B that overlapped (by at least 1 bp) the A interval
+# A_Bases = number of bases in A that had non-zero coverage from features in B
+# A_Len = length of entry in A
+# Coverage_Ratio = fraction of bases in A that had non-zero coverage from features in B
+
+colnames(test) <- c("Chr", "Start", "End", "Exon", "Score", "Strand", "N_Features", "A_Bases", "A_Len", "Coverage_Ratio", "fileId")
+
+
+
+fileId = "ff7f0d51-dcd7-4002-a42c-4d63e4bdd600"
+
+test
+
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
