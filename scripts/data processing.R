@@ -160,3 +160,15 @@ plotDF <- plotDF %>%
   mutate(Binary.Disease.Free.Status = if_else(str_detect(Disease.Free.Status, "Recurred/Progressed"), 1, 0))
 ```
 
+#Calculate isoform ratios
+                                
+```{r}
+myDF <- myDF %>%
+  mutate(
+    
+    Isoform.Ratio.202 = as.double(E3.1.N.Features) / (as.double(E3.1.N.Features) + as.double(E3.2.N.Features)),
+    Isoform.Ratio.204 = as.double(E3.2.N.Features) / (as.double(E3.1.N.Features) + as.double(E3.2.N.Features)),
+    
+    Main.Isoform = ifelse(Isoform.Expression.202 > Isoform.Expression.204, "Isoform.202", "Isoform.204"),
+  )
+```
