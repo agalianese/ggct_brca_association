@@ -152,6 +152,22 @@ TCGA_clinicalDF <- TCGA_clinicalDF %>%
   mutate(Binary.Disease.Free.Status = if_else(str_detect(Disease.Free.Status, "Recurred/Progressed"), 1, 0))
 ```
 
+
+
+```{r}
+#binary.disease.free is missing the most amount of data (about 160 cases when compared w overall survival)
+
+disease.free.df <- myDF[complete.cases(myDF$Binary.Disease.Free.Status), ]
+disease.specific.df <- myDF[complete.cases(myDF$Binary.Disease.specific.Survival.status), ]
+progression.free.df <- myDF[complete.cases(myDF$Binary.Progression.Free.Status), ]
+overall.df <- myDF[complete.cases(myDF$Binary.Overall.Survival.Status), ]
+
+nrow(disease.free.df)
+nrow(disease.specific.df)
+nrow(progression.free.df)
+nrow(overall.df)
+```
+
 ```{r}
 
 myDF %>% filter(Majorly.Expressed.Isoform == "Isoform.204")
