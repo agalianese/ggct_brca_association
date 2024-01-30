@@ -1,0 +1,52 @@
+# Continuous Variables
+Diagnosis.Age 
+Aneuploidy.Score	
+Buffa.Hypoxia.Score	| TMB..nonsynonymous.	
+MSI.MANTIS.Score	
+MSIsensor.Score	
+Mutation.Count	
+Fraction.Genome.Altered
+TMB..nonsynonymous.	
+
+# Categorical Variables
+Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code	
+American.Joint.Committee.on.Cancer.Publication.Version.Type	
+Cancer.Type.Detailed	
+
+Ethnicity.Category	
+	
+Genetic.Ancestry.Label	
+Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text	
+
+New.Neoplasm.Event.Post.Initial.Therapy.Indicator	
+Oncotree.Code	
+American.Joint.Committee.on.Cancer.Metastasis.Stage.Code	
+Neoplasm.Disease.Lymph.Node.Stage.American.Joint.Committee.on.Cancer.Code	
+American.Joint.Committee.on.Cancer.Tumor.Stage.Code	Person.Neoplasm.Cancer.Status	
+Primary.Lymph.Node.Presentation.Assessment	
+Prior.Diagnosis	
+Race.Category	
+Radiation.Therapy	
+Ragnum.Hypoxia.Score	
+Number.of.Samples.Per.Patient	
+Sex	
+Subtype	
+Tissue.Prospective.Collection.Indicator	
+Tissue.Retrospective.Collection.Indicator	
+Tissue.Source.Site.Code
+Tumor.Type	
+
+
+# Outcome Variables
+Overall.Survival..Months.	+ Binary.Overall.Survival.Status
+Binary.Progression.Free.Status	+ Progress.Free.Survival..Months.	
+Binary.Disease.specific.Survival.status + Months.of.disease.specific.survival	
+Binary.Disease.Free.Status + Disease.Free..Months.
+
+# Discarded Variables
+Birth.from.Initial.Pathologic.Diagnosis.Date	
+Last.Alive.Less.Initial.Pathologic.Diagnosis.Date.Calculated.Day.Value	
+Sample.Type	> all="Primary"
+Somatic.Status> all ="Matched"
+Tissue.Source.Site.Code > where the tissue is from ex: Columbia, Texas Anderson etc.
+Other.Patient.ID	
