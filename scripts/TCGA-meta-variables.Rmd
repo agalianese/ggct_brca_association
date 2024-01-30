@@ -14,25 +14,24 @@ American.Joint.Committee.on.Cancer.Publication.Version.Type
 Cancer.Type.Detailed	
 
 Ethnicity.Category | Genetic.Ancestry.Label | Race.Category	
-Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text	
-
 New.Neoplasm.Event.Post.Initial.Therapy.Indicator	
-Oncotree.Code	
+Oncotree.Code	| Tumor.Type	
 American.Joint.Committee.on.Cancer.Metastasis.Stage.Code	
 Neoplasm.Disease.Lymph.Node.Stage.American.Joint.Committee.on.Cancer.Code	
 American.Joint.Committee.on.Cancer.Tumor.Stage.Code	
 Person.Neoplasm.Cancer.Status	#tumor_free=941, with_tumor=103
-Primary.Lymph.Node.Presentation.Assessment	
+	
 Prior.Diagnosis	#no=1108, yes=65
 Radiation.Therapy	#no=450, yes=562
-Number.of.Samples.Per.Patient	
+Number.of.Samples.Per.Patient	[1,4]
 Sex	
-Subtype	
-Tissue.Prospective.Collection.Indicator	
-Tissue.Retrospective.Collection.Indicator	
-Tissue.Source.Site.Code
-Tumor.Type	
 
+
+
+
+# Maybe
+Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text	 > no=1166, yes=7
+Subtype	> 4 cats, n=1066 but great data
 
 # Outcome Variables
 Overall.Survival..Months.	+ Binary.Overall.Survival.Status
@@ -47,3 +46,5 @@ Sample.Type	> all="Primary"
 Somatic.Status> all ="Matched"
 Tissue.Source.Site.Code > where the tissue is from ex: Columbia, Texas Anderson etc.
 Other.Patient.ID	
+Primary.Lymph.Node.Presentation.Assessment > only 794 cases, removed for NA
+Tissue.Prospective.Collection.Indicator	| Tissue.Retrospective.Collection.Indicator	 > whether the tissue was 
