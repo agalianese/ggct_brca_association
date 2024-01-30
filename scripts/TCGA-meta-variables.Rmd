@@ -1,7 +1,7 @@
 # Continuous Variables
 Diagnosis.Age 
 Aneuploidy.Score	
-Buffa.Hypoxia.Score	| TMB..nonsynonymous.	
+Buffa.Hypoxia.Score	| Ragnum.Hypoxia.Score	| Winter.Hypoxia.Score	
 MSI.MANTIS.Score	
 MSIsensor.Score	
 Mutation.Count	
@@ -13,21 +13,18 @@ Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code
 American.Joint.Committee.on.Cancer.Publication.Version.Type	
 Cancer.Type.Detailed	
 
-Ethnicity.Category	
-	
-Genetic.Ancestry.Label	
+Ethnicity.Category | Genetic.Ancestry.Label | Race.Category	
 Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text	
 
 New.Neoplasm.Event.Post.Initial.Therapy.Indicator	
 Oncotree.Code	
 American.Joint.Committee.on.Cancer.Metastasis.Stage.Code	
 Neoplasm.Disease.Lymph.Node.Stage.American.Joint.Committee.on.Cancer.Code	
-American.Joint.Committee.on.Cancer.Tumor.Stage.Code	Person.Neoplasm.Cancer.Status	
+American.Joint.Committee.on.Cancer.Tumor.Stage.Code	
+Person.Neoplasm.Cancer.Status	#tumor_free=941, with_tumor=103
 Primary.Lymph.Node.Presentation.Assessment	
-Prior.Diagnosis	
-Race.Category	
-Radiation.Therapy	
-Ragnum.Hypoxia.Score	
+Prior.Diagnosis	#no=1108, yes=65
+Radiation.Therapy	#no=450, yes=562
 Number.of.Samples.Per.Patient	
 Sex	
 Subtype	
