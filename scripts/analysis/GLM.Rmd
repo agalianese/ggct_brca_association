@@ -1,0 +1,213 @@
+```{r}
+
+library(survival)
+library(survminer)
+library(ggpmisc)
+library(tidyverse)
+library(ggpubr)
+library(dplyr)
+library(survival)
+
+setwd("~/Documents/GGCT_BRCA_assocation")
+library(MASS)
+```
+
+
+```{r}
+#GLM model
+test <- (glm(Binary.Disease.Free.Status ~ Isoform.Ratio.202 + E3.202.Features + E3.204.Features, data=myDF, family = binomial(link = "logit")))
+
+
+exp(test$coefficients)
+
+
+#validating using cox
+fit = survfit(Surv(Disease.Free..Months., Binary.Disease.Free.Status,type="right") ~ Isoform.Ratio.202+ E3.202.Features + E3.204.Features, data= myDF)
+
+
+
+```
+
+
+
+#Binary - Disease Free 
+```{r}
+
+fullModelData1 <- myDF %>%
+  select(Binary.Disease.Free.Status, Disease.Free..Months., E3.202.Features, E3.204.Features, Isoform.Ratio.202, Diagnosis.Age, Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code, American.Joint.Committee.on.Cancer.Publication.Version.Type, Aneuploidy.Score, Buffa.Hypoxia.Score, Ethnicity.Category, Fraction.Genome.Altered, Genetic.Ancestry.Label, Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text, ICD.10.Classification, MSI.MANTIS.Score, MSIsensor.Score, Mutation.Count, Ragnum.Hypoxia.Score, Prior.Diagnosis, Oncotree.Code, Winter.Hypoxia.Score)
+
+fullData1 <- na.omit(fullModelData1)
+
+fullModel1 <- glm(Binary.Disease.Free.Status ~ E3.202.Features + E3.204.Features + Isoform.Ratio.202  + Diagnosis.Age + Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code + American.Joint.Committee.on.Cancer.Publication.Version.Type + Aneuploidy.Score + Buffa.Hypoxia.Score + Ethnicity.Category + Fraction.Genome.Altered + Genetic.Ancestry.Label + Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text + ICD.10.Classification + MSI.MANTIS.Score + MSIsensor.Score + Mutation.Count + Ragnum.Hypoxia.Score + Prior.Diagnosis + Oncotree.Code + Winter.Hypoxia.Score, data=fullData1, family = binomial(link = "logit"))
+
+summary(fullModel1) #AIC: 314.9
+plot(fullModel1)
+```
+
+#Step Disease Free
+```{r}
+#stepAIC(fullModel1,direction="both") 
+
+out <- glm(formula = Binary.Disease.Free.Status ~ Diagnosis.Age + Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code + 
+    American.Joint.Committee.on.Cancer.Publication.Version.Type + 
+    Buffa.Hypoxia.Score + Isoform.Ratio.202 + E3.202.Features + E3.204.Features, family = binomial(link = "logit"), 
+    data = fullData1)
+
+
+
+
+summary(out)
+
+exp(out$coefficients)
+
+
+#log odds against
+
+out <- glm(formula = Binary.Disease.Free.Status ~ Isoform.Ratio.202 + E3.202.Features + E3.204.Features, family = binomial(link = "logit"), 
+    data = fullData1)
+
+#>1, going to increase odds, 
+
+#<1 decrease odds 
+
+
+```
+
+
+```{r}
+table(fullData1$American.Joint.Committee.on.Cancer.Publication.Version.Type)
+
+table(fullData1$Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code)
+fullData1
+
+boxplot(fullData1$Buffa.Hypoxia.Score)
+boxplot(fullData1$Winter.Hypoxia.Score)
+
+summary(fullData1$Buffa.Hypoxia.Score)
+summary(fullData1$Winter.Hypoxia.Score)
+hist((fullData1$Winter.Hypoxia.Score))
+
+test <- fullData1 %>%
+  filter(Binary.Disease.Free.Status==1)
+```
+
+
+```{r}
+table(fullData1$American.Joint.Committee.on.Cancer.Publication.Version.Type)
+table(test$American.Joint.Committee.on.Cancer.Publication.Version.Type)
+
+table(myDF$Subtype)
+
+myDF
+TCGA_full_clinicalDF
+```
+
+
+```{r}
+fullData1
+
+boxplot(test$Buffa.Hypoxia.Score)
+boxplot(test$Winter.Hypoxia.Score)
+
+```
+
+
+
+#Binary - Disease Specific
+```{r}
+
+fullModelData2 <- myDF %>%
+  select(Binary.Disease.specific.Survival.status, Months.of.disease.specific.survival, E3.202.Features, E3.204.Features, Isoform.Ratio.202, Diagnosis.Age, Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code, American.Joint.Committee.on.Cancer.Publication.Version.Type, Aneuploidy.Score, Buffa.Hypoxia.Score, Ethnicity.Category, Fraction.Genome.Altered, Genetic.Ancestry.Label, Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text, ICD.10.Classification, MSI.MANTIS.Score, MSIsensor.Score, Mutation.Count, Ragnum.Hypoxia.Score, Prior.Diagnosis, Oncotree.Code, Winter.Hypoxia.Score)
+
+fullData2 <- na.omit(fullModelData2)
+
+fullModel2 <- glm(Binary.Disease.specific.Survival.status ~ E3.202.Features + E3.204.Features + Isoform.Ratio.202  + Diagnosis.Age + Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code + American.Joint.Committee.on.Cancer.Publication.Version.Type + Aneuploidy.Score + Buffa.Hypoxia.Score + Ethnicity.Category + Fraction.Genome.Altered + Genetic.Ancestry.Label + Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text + ICD.10.Classification + MSI.MANTIS.Score + MSIsensor.Score + Mutation.Count + Ragnum.Hypoxia.Score + Prior.Diagnosis + Oncotree.Code + Winter.Hypoxia.Score, data=fullData2, family = binomial(link = "logit"))
+
+summary(fullModel2) #AIC: 325.3
+plot(fullModel2)
+
+```
+
+
+#Binary - Progression Free
+```{r}
+
+fullModelData3 <- myDF %>%
+  select(Binary.Progression.Free.Status, Progress.Free.Survival..Months., E3.202.Features, E3.204.Features, Isoform.Ratio.202, Diagnosis.Age, Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code, American.Joint.Committee.on.Cancer.Publication.Version.Type, Aneuploidy.Score, Buffa.Hypoxia.Score, Ethnicity.Category, Fraction.Genome.Altered, Genetic.Ancestry.Label, Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text, ICD.10.Classification, MSI.MANTIS.Score, MSIsensor.Score, Mutation.Count, Ragnum.Hypoxia.Score, Prior.Diagnosis, Oncotree.Code, Winter.Hypoxia.Score)
+
+fullData3 <- na.omit(fullModelData3)
+
+fullModel3 <- glm(Binary.Progression.Free.Status ~ E3.202.Features + E3.204.Features + Isoform.Ratio.202  + Diagnosis.Age + Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code + American.Joint.Committee.on.Cancer.Publication.Version.Type + Aneuploidy.Score + Buffa.Hypoxia.Score + Ethnicity.Category + Fraction.Genome.Altered + Genetic.Ancestry.Label + Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text + ICD.10.Classification + MSI.MANTIS.Score + MSIsensor.Score + Mutation.Count + Ragnum.Hypoxia.Score + Prior.Diagnosis + Oncotree.Code + Winter.Hypoxia.Score, data=fullData3, family = binomial(link = "logit"))
+
+summary(fullModel3) #AIC: 482.58
+plot(fullModel3)
+
+```
+
+
+
+#Binary - Overall Survival
+```{r}
+
+fullModelData4 <- myDF %>%
+  select(Binary.Overall.Survival.Status, E3.202.Features, E3.204.Features, Isoform.Ratio.202, Diagnosis.Age, Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code, American.Joint.Committee.on.Cancer.Publication.Version.Type, Aneuploidy.Score, Buffa.Hypoxia.Score, Ethnicity.Category, Fraction.Genome.Altered, Genetic.Ancestry.Label, Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text, ICD.10.Classification, MSI.MANTIS.Score, MSIsensor.Score, Mutation.Count, Ragnum.Hypoxia.Score, Prior.Diagnosis, Winter.Hypoxia.Score)
+
+fullModel4 <- glm(Binary.Overall.Survival.Status ~ E3.202.Features + E3.204.Features + Isoform.Ratio.202  + Diagnosis.Age + Neoplasm.Disease.Stage.American.Joint.Committee.on.Cancer.Code + American.Joint.Committee.on.Cancer.Publication.Version.Type + Aneuploidy.Score + Buffa.Hypoxia.Score  + Fraction.Genome.Altered  + Neoadjuvant.Therapy.Type.Administered.Prior.To.Resection.Text + ICD.10.Classification + MSI.MANTIS.Score + MSIsensor.Score + Mutation.Count + Ragnum.Hypoxia.Score + Prior.Diagnosis + Winter.Hypoxia.Score, data=fullData4, family = binomial(link = "logit")) #AIC: 402.3
+
+fullModel4
+```
+
+#stepAIC for fullModel
+```{r}
+stepAIC(fullModel4,direction="both") # 
+```
+
+
+```{r}
+
+```
+
+
+#stepAIC for continous Model
+```{r}
+stepAIC(continousModel,direction="both")
+continousModel
+
+
+plot(continousModel)
+```
+
+
+```{r}
+finalModel <- glm(formula = Binary.Disease.Free.Status, Disease.Free..Months. ~ Diagnosis.Age + American.Joint.Committee.on.Cancer.Publication.Version.Type + Ragnum.Hypoxia.Score + Person.Neoplasm.Cancer.Status + Isoform.Ratio.202, family = binomial(link = "logit"), data = fullData)
+
+
+myDF$Disease.Free..Months.
+summary(finalModel)
+plot(finalModel)
+
+
+```
+
+
+
+
+
+
+
+
+```{r}
+# Extracting model coefficients
+summary(logit.reg)$coefficients
+exp(logit.reg$coefficient[2:3])
+
+
+#When the odds value is smaller than 1, interpretation is a little bit more complicated. When this is the case, we have to take the inverse value (i.e. 1 divided by the odds) to facilitate interpretation.
+
+#he interpretation is then how LESS likely it is to observe the event of interest. For water content, the odds is 0.984. The inverse is:
+(1/0.984) # 1.01626
+
+#This means that a one-unit increase in water content decreases the likelihood of observing Galumna sp. by 1.0159. We can also subtract 1 from the odds value to obtain a percentage:
+ (1.01626 - 1) * 100 #1.626
+
+```
