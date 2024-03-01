@@ -239,6 +239,31 @@ ggsurvplot(fit, data=mySubs, pval=T)
 
 ```
 
+```{r}
+selected_columns <- c("Subtype", "Disease.Free..Months.", "Months.of.disease.specific.survival", "Overall.Survival..Months.", "Progress.Free.Survival..Months.")
+
+selected_data <- dplyr::select(myDF, all_of(selected_columns))
+longSurvival <- reshape2::melt(selected_data, id.vars="Subtype")
+
+
+selectedDead <- dplyr::select(deadDiseaseFree, all_of(selected_columns))
+deadSubtype <- reshape2::melt(selectedDead, id.vars="Subtype")
+
+#add anova to plot
+good <- ggplot(longSurvival, aes(x = Subtype, y = value, group_by=variable, fill=Subtype)) +
+  geom_boxplot() +
+  labs(x = "Subtype", y = "Survival in Months", title = "Survival against Subtype") +
+  theme_minimal() + facet_wrap("variable") + stat_anova_test() +  theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+
+good
+
+
+ggplot(deadSubtype, aes(x = Subtype, y = value, group_by=variable, fill=Subtype)) +
+  geom_boxplot() +
+  labs(x = "Subtype", y = "Survival in Months", title = "Survival against Subtype") +
+  theme_minimal() + facet_wrap("variable") + stat_anova_test() +  theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+
+```
 
 
 #No sig-nificant differences in DSS or OS were identified between the immune-related subgroup and either the proliferative or reactive-like subgroup. These results are consistent with previ-ous studies reporting that the reactive stromal phenotype is associated with a good prognosis in breast cancer while prolifer-ation is one of the strongest indicators of worse outcome in luminal/ER+ breast cancers
